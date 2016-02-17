@@ -1,0 +1,55 @@
+/* Empty. Add your own CSS if you like */
+.stream-background {
+  background: url('../images/ionic.jpg') center center;
+  background-size: cover;
+}
+
+.play-button-icon.icon:before {
+  font-size: 200px;
+  color: wheat;
+}
+
+.center {
+     text-align: center;
+    padding-top: 60%;
+}
+
+.item-thumbnail-left{
+  width: 100%;
+}
+
+.mediaplayer-bar{
+  padding: 0;
+  
+  height: 50px;
+  background-color: #e6e6e6;
+}
+
+.mediaplayer{
+  padding: 0px;
+  font-size:40px;
+}
+
+.mediaplayer-button{
+  padding-left: 10px;
+}
+.mediaplayer-info{
+  font-size: 15px;
+  font-weight: bold;
+}
+.mediaplayer-alert{
+  background-color:#000000;
+  color:#FFFFFF;
+
+  height:0px;
+   transition:2s;
+}
+.mediaplayer-alert.active{
+ 
+  height:30px;
+}
+
+.hide{
+  display:none;
+}
+

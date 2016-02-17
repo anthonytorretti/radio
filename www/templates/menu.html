@@ -1,0 +1,63 @@
+<ion-side-menus enable-menu-with-back-views="false">
+  <ion-side-menu-content>
+    <ion-nav-bar class="bar-stable">
+      <ion-nav-back-button>
+      </ion-nav-back-button>
+
+      <ion-nav-buttons side="right">
+        <button class="button button-icon button-clear ion-navicon" menu-toggle="right">
+        </button>
+      </ion-nav-buttons>
+    </ion-nav-bar>
+    
+    <ion-nav-view name="menuContent"></ion-nav-view>
+     <audio id="streamplayer" src="" ng-src="{{src}}"></audio>
+     <ion-footer-bar align-title="left" class="mediaplayer-alert" ng-class="{'active' : alertactive, 'hide' : hide}">{{'PlayerAlertMessage' | translate}}
+       </ion-footer-bar>
+       
+    <ion-footer-bar align-title="left" ng-class="{'hide' : hide}" class="mediaplayer-bar">
+      
+      <div class="row mediaplayer">
+      <div class="col mediaplayer-button">
+        <i class="icon" ng-class="stream.isPlaying ? 'ion-ios-pause' : 'ion-ios-play' " ng-click="play()"></i>
+      </div>
+      <div class="col col-50 col-center mediaplayer-info">{{stream.isPlaying ? stream.info.title : 'Streaming Paused'}}
+        
+      </div>
+       <div class="col col-33 col-center mediaplayer-info"  ng-include="'resources/play-widget/playing-widget.html'">
+      
+      </div>
+    
+   
+    </div>
+
+  
+    </ion-footer-bar>
+
+
+  </ion-side-menu-content>
+
+  <ion-side-menu side="right">
+    <ion-header-bar class="bar-stable">
+      <h1 class="title">Right</h1>
+    </ion-header-bar>
+
+
+    <ion-content>
+      <ion-list>
+        <ion-item menu-close ng-click="login()">
+          Genere 1
+        </ion-item>
+        <ion-item menu-close href="#/app/search">
+          Genere 2
+        </ion-item>
+        <ion-item menu-close href="#/app/browse">
+          Genere 3
+        </ion-item>
+        <ion-item menu-close href="#/app/playlists">
+          Genere 4
+        </ion-item>
+      </ion-list>
+    </ion-content>
+  </ion-side-menu>
+</ion-side-menus>
