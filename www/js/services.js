@@ -123,7 +123,7 @@ console.log(streamStatus.info.title);
                     MusicControls.create({
                               track       : streamStatus.info.title,        // optional, default : ''
                               artist      : '',                       // optional, default : ''
-                            
+                           // cover :'',                               // cover url goes here
                               isPlaying   : true,                         // optional, default : true
                               dismissable : true,                         // optional, default : false
 
