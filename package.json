@@ -1,7 +1,7 @@
 {
-  "name": "radio_new",
+  "name": "Radio Strinella",
   "version": "1.1.1",
-  "description": "radio_new: An Ionic project",
+  "description": "Radio degli universitari dell'Aquila",
   "dependencies": {
     "gulp": "^3.5.6",
     "gulp-sass": "^2.0.4",
