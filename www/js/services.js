@@ -53,7 +53,7 @@ angular.module('starter.services', [])
 
 
 
-var myaudioURL = 'http://74.86.113.231:8000/;';
+var myaudioURL = 'http://74.86.113.231:8000/stream;';
  var metadataUrl = 'http://74.86.113.231:8000/7.html';
  var contentRegex = /<body>(.*)<\/body>/;
  var itunesSearchUrl = 'https://itunes.apple.com/search?term=';
