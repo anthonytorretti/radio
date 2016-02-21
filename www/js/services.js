@@ -65,6 +65,7 @@ var myaudioURL = 'http://74.86.113.231:8000/stream;';
  
 var info = {
   title:"loading"
+  coverUrl:""
 }
 
  var streamStatus={
@@ -233,12 +234,37 @@ console.log(streamStatus.info.title);
                       console.log(streamStatus.isPlaying);
                       streamStatus.isPlaying = true;
                       console.log(streamStatus.isPlaying);
+                       
+                      timer = $interval(function() {
                       self.updateStreamInfo();
+                       }, 5000);
+
+                     
                       myaudio.volume=1.0;
                       
                   },
 
+  playList: function() {
+                      myaudio.currentTime=currentTime;
+                      myaudio.play();
+                  },
+
+
+
+  pauseList: function(){
+                      currentTime=myaudio.currentTime;
+                      myaudio.pause();
+                      myaudio.src="";
+                      myaudio = null;
+                      myaudio = new Audio(myaudioURL);
+                      myaudio.preload = "none";
+                   },
+
   pause: function(){
+
+                    
+
+
                       myaudio.volume=0.0;
                       streamStatus.isPlaying = false;
                       clearInterval(readyStateInterval);
