@@ -118,6 +118,8 @@ angular.module('starter.controllers',[])
 
 .controller('StreamController', function($scope,$interval,streamService,$css,$timeout) {
 
+  
+
 // *********************************************************************
 
 var streamStatus=streamService.getStatus();

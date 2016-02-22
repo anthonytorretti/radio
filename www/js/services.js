@@ -64,7 +64,7 @@ var myaudioURL = 'http://74.86.113.231:8000/stream;';
  var isLoaded = false;
  
 var info = {
-  title:"loading"
+  title:"loading",
   coverUrl:""
 }
 
