@@ -4,7 +4,7 @@ angular.module('starter.controllers',[])
 
 
 
- 
+
 
 
   //CONTROLLER OF ABSTACT METHOD PRESENT IN ALL CONTROLLERS////
@@ -14,15 +14,15 @@ angular.module('starter.controllers',[])
                 var streamStatus;
                 var alertshowed=false;
                  $scope.stream=streamService.getStatus();
-  
+
 
                 timer = $interval(function() {
                   streamStatus=streamService.getStatus();
-  
+
                   $scope.stream=streamStatus;
                  //ALERT TO WAIT A LITTLE MORE FOR STREAMING TO START
                 /* if(streamStatus.info.title!="loading" && streamStatus.isPlaying==true && alertshowed==false){
-                  
+
                      $scope.alertactive=true;
                      $timeout(function() {
                      $scope.alertactive=false;
@@ -37,9 +37,9 @@ angular.module('starter.controllers',[])
                $scope.play= function(){
 
                   streamService.toggleplay();
-                 
+
               }
-                
+
 
 
 
@@ -50,8 +50,8 @@ angular.module('starter.controllers',[])
 
 
             //HIDE PLAYER FROM CERTAIN VIEWS//
-              $rootScope.$on('$stateChangeStart',function(event, toState, toParams, fromState, fromParams, options){ 
-                  
+              $rootScope.$on('$stateChangeStart',function(event, toState, toParams, fromState, fromParams, options){
+
                   if(toState.url=="/stream"){
                     $scope.hide=true;
 
@@ -59,7 +59,7 @@ angular.module('starter.controllers',[])
                   else{
                     $scope.hide=false;
                   }
-    // transitionTo() promise will be rejected with 
+    // transitionTo() promise will be rejected with
     // a 'transition prevented' error
 })
 })
@@ -67,7 +67,7 @@ angular.module('starter.controllers',[])
 .controller('DashCtrl', function($scope) {
 
   var deploy = new Ionic.Deploy();
-  
+
   // Update app code with new release from Ionic Deploy
   $scope.doUpdate = function() {
     deploy.update().then(function(res) {
@@ -118,14 +118,14 @@ angular.module('starter.controllers',[])
 
 .controller('StreamController', function($scope,$interval,streamService,$css,$timeout) {
 
-  
+
 
 // *********************************************************************
 
 var streamStatus=streamService.getStatus();
-  
+
   $timeout(function(){
-   
+
    $scope.vm=streamStatus;
   },50);
 
@@ -143,7 +143,7 @@ var streamStatus=streamService.getStatus();
 var myaudioURL = 'http://74.86.113.231:8000/;';
 
 
-  
+
 
 
 });
