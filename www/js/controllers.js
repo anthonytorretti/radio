@@ -7,19 +7,20 @@ angular.module('starter.controllers',[])
 
 
 
-  //CONTROLLER OF ABSTACT METHOD PRESENT IN ALL CONTROLLERS////
+  //CONTROLLER OF ABSTRACT METHOD PRESENT IN ALL CONTROLLERS////
             //PLAY CONTROL OF GENERAL PLAYER//
-                streamService.loadstream();
-
-                var streamStatus;
-                var alertshowed=false;
-                 $scope.stream=streamService.getStatus();
 
 
+
+               // var alertshowed=false;
+
+
+                $scope.loadstream=streamService.loadstream();
+
+                     //START GETTING STREAM INFO
+                $scope.streamInfo=streamService.getStatus();
                 timer = $interval(function() {
-                  streamStatus=streamService.getStatus();
-
-                  $scope.stream=streamStatus;
+                  $scope.streamInfo=streamService.getStatus();
                  //ALERT TO WAIT A LITTLE MORE FOR STREAMING TO START
                 /* if(streamStatus.info.title!="loading" && streamStatus.isPlaying==true && alertshowed==false){
 
@@ -30,14 +31,10 @@ angular.module('starter.controllers',[])
                      }, 2000);
                  }
                  */
-
                 }, 5000);
 
-
-               $scope.play= function(){
-
+                $scope.play= function(){
                   streamService.toggleplay();
-
               }
 
 

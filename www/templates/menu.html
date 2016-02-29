@@ -9,31 +9,31 @@
         </button>
       </ion-nav-buttons>
     </ion-nav-bar>
-    
+
+    <!--Tab View Content Goes Here-->
     <ion-nav-view name="menuContent"></ion-nav-view>
-     <audio id="streamplayer" src="" ng-src="{{src}}"></audio>
-     <ion-footer-bar align-title="left" class="mediaplayer-alert" ng-class="{'active' : alertactive, 'hide' : hide}">{{'PlayerAlertMessage' | translate}}
-       </ion-footer-bar>
-       
+
+    <!--Start Alert Message Bar-->
+    <ion-footer-bar align-title="left" class="mediaplayer-alert" ng-class="{'active' : alertactive, 'hide' : hide}">{{'PlayerAlertMessage' | translate}}</ion-footer-bar>
+    <!--End Alert Message Bar-->
+
+    <!--Start Media Player Widget Footer Bar-->
     <ion-footer-bar align-title="left" ng-class="{'hide' : hide}" class="mediaplayer-bar">
-      
+
       <div class="row mediaplayer">
-      <div class="col mediaplayer-button">
-        <i class="icon" ng-class="stream.isPlaying ? 'ion-ios-pause' : 'ion-ios-play' " ng-click="play()"></i>
-      </div>
-      <div class="col col-50 col-center mediaplayer-info">{{stream.isPlaying ? stream.info.title : 'Streaming Paused'}}
-        
-      </div>
-       <div class="col col-33 col-center mediaplayer-info"  ng-include="'resources/play-widget/playing-widget.html'">
-      
-      </div>
-    
-   
-    </div>
+          <div class="col mediaplayer-button">
+            <i class="icon" ng-class="streamInfo.isPlaying ? 'ion-ios-pause' : 'ion-ios-play' " ng-click="play()"></i>
+          </div>
+      <div class="col col-50 col-center mediaplayer-info">{{streamInfo.isPlaying ? streamInfo.info.title : 'Streaming Paused'}}</div>
 
-  
+
+        <div class="col col-33 col-center mediaplayer-info"  ng-include="'resources/play-widget/playing-widget.html'"></div>
+
+
+      </div>
+
     </ion-footer-bar>
-
+    <!--End Media Player FooterBar-->
 
   </ion-side-menu-content>
 
@@ -45,7 +45,7 @@
 
     <ion-content>
       <ion-list>
-         <ion-item menu-close href="#/app/playlists">
+         <ion-item menu-close ng-click="streamService.loadstream('TopHits')" href="#/app/playlists">
           Top Hits
         </ion-item>
         <ion-item menu-close href="#/app/playlists">

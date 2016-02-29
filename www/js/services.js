@@ -49,37 +49,64 @@ angular.module('starter.services', [])
   };
 })
 
-.factory('streamService', function($http,$q,$interval,$rootScope,$sce){
+.factory('streamService', function($http){
 
 
 
 var myaudioURL = 'http://74.86.113.231:8000/stream;';
- var metadataUrl = 'http://74.86.113.231:8000/7.html';
- var contentRegex = /<body>(.*)<\/body>/;
- var itunesSearchUrl = 'https://itunes.apple.com/search?term=';
- var resolutionRegex = /100x100/;
- var myaudio = null;
- var readyStateInterval = null;
- var isPlaying = false;
- var isLoaded = false;
- 
-var info = {
+var metadataUrl = 'http://74.86.113.231:8000/7.html';
+var itunesSearchUrl = 'https://itunes.apple.com/search?term=';
+var myaudio = null;
+var readyStateInterval = null;
+var isPlaying = false;
+var isLoaded = false;
+var timer=null;
+var bufferOn=true;
+
+var noInfo = {
   title:"loading",
   coverUrl:""
-}
+};
 
  var streamStatus={
                 isLoaded:isLoaded,
                 isPlaying:isPlaying,
-                info:info
+                info:noInfo
               };
 
 
 var streamCtrl = {
 
- 
+  setStreamSource : function(genere) {
+    switch(genere){
+      case 'topHits':
+        myaudioURL = 'http://74.86.113.231:8000/stream;';
+        break;
+      case 'rock':
+        myaudioURL = 'http://74.86.113.231:8000/stream;';
+        break;
+      case 'chillOut':
+        myaudioURL = 'http://74.86.113.231:8000/stream;';
+        break;
+      case 'Metal':
+        myaudioURL = 'http://74.86.113.231:8000/stream;';
+        break;
+      case 'ClassicheItaliane':
+        myaudioURL = 'http://74.86.113.231:8000/stream;';
+        break;
+      default:
+            break;
+
+
+
+    }
+  },
+
+
   getStatus: function() {
-                     return streamStatus;
+                self.updateStreamInfo();
+    console.log("Get Stream Info "+streamStatus.isPlaying);
+                return streamStatus;
                      },
 
 
@@ -120,11 +147,11 @@ var streamCtrl = {
 
 
   showCtrl: function()  {
-console.log(streamStatus.info.title);
+          console.log(streamStatus.info.title);
                     MusicControls.create({
                               track       : streamStatus.info.title,        // optional, default : ''
-                              artist      : '',                       // optional, default : ''
-                           // cover :'',                               // cover url goes here
+                              artist      : "",                       // optional, default : ''
+                              cover : "../img/adam.jpg",                               // cover url goes here
                               isPlaying   : true,                         // optional, default : true
                               dismissable : true,                         // optional, default : false
 
@@ -135,36 +162,77 @@ console.log(streamStatus.info.title);
 
                               // Android only, optional
                               // text displayed in the status bar when the notification (and the ticker) are updated
-                              ticker    : 'Now playing "Time is Running Out"'
+                              ticker    : 'Now playing '+streamStatus.info.title
                         }, function(){}, function(){});
 
                     MusicControls.subscribe(self.streamCtrlEvents);
                     MusicControls.listen();
                       },
 
-  loadstream: function() {
 
-                   clearInterval(readyStateInterval);
+
+  streamBuffer : function(action){
+    var count=0;
+    var bufferLenght=10; //Seconds of Buffer Keep
+    switch(action){
+      case 'keep':
+              console.log("Keeping StreamBuffer");
+              clearInterval(timer);
+              break;
+      case 'stop':
+              console.log("BUFFER STOPPED");
+              self.stop();
+              bufferOn=false;
+              break;
+      case 'start':  timer = setInterval(function() {
+             count++;
+             console.log("Buffer Clear in "+ (bufferLenght-count)+" s");
+              if(count>=bufferLenght) {
+                clearInterval(timer);
+                self.streamBuffer("stop");
+
+              }
+                  }, 1000);
+            break;
+      default:
+            break;
+        }
+
+
+  },
+
+  loadstream: function(genere) {
+                   console.log("Loading buffer stream URL "+myaudioURL);
+
+                   bufferOn=true;
+                   self.streamBuffer("start");
+
+              //Set Stream Source Depending on User Choice
+                   self.setStreamSource(genere);
+
+
+
                    myaudio = null;
                    myaudio = new Audio(myaudioURL);
 
                    myaudio.volume=0.0;
                    myaudio.play();
 
+
                    readyStateInterval = setInterval(function(){
-                     console.log(myaudio.readyState);
+                     console.log("Streaming Connection State "+ myaudio.readyState);
                       if(myaudio.readyState==4){
-                    
+
                        }
-                     },1000);
-                   
-                  
+                     },5000);
+
+
                   //VERIFICA ERRORI CONNESSIONE DI RETE
                     },
-                
 
 
- 
+
+
 
 
 
@@ -172,7 +240,7 @@ console.log(streamStatus.info.title);
 
 
   getCover: function(title) {
-     
+                          var resolutionRegex = /100x100/;
                           return $http.get(itunesSearchUrl + title).then(function(response) {
                             var item = response.data.results[0];
                             if (!item || !item.artworkUrl100) {
@@ -183,6 +251,7 @@ console.log(streamStatus.info.title);
                         },
 
   parseShoutcastResponse: function(html) {
+                          var contentRegex = /<body>(.*)<\/body>/;
                           var content = html.match(contentRegex)[1];
                           var parts = content.split(',');
                           if (parts.length < 7 || !parts[6]) {
@@ -192,9 +261,9 @@ console.log(streamStatus.info.title);
                         },
 
   getStreamInfo: function() {
-       
+
                         return $http.get(metadataUrl).then(function(response) {
-                         
+
                           var title = self.parseShoutcastResponse(response.data);
 
                           if (!title) {
@@ -208,14 +277,14 @@ console.log(streamStatus.info.title);
                           });
                         },function errorCallback(response){
 
-                         
+
                         });
                       },
   updateStreamInfo: function() {
 
                       if(streamStatus.isPlaying==true){
                              self.getStreamInfo().then(function(info) {
-                             
+
                              streamStatus.info = info;
                              console.log(streamStatus.info);
                              self.showCtrl();
@@ -224,24 +293,23 @@ console.log(streamStatus.info.title);
                               });
                             }
                       else
-                         streamStatus.info=null;
+                         streamStatus.info=noInfo;
                         },
 
 
   play: function(){
-   
-                      
+
+                    if(bufferOn==false){
+                      //POSSIBILE AVVISO DI ATTENDERE CARICAMENTO//
+                      self.loadstream();
+                    }
+                      self.streamBuffer("keep");
                       console.log(streamStatus.isPlaying);
                       streamStatus.isPlaying = true;
                       console.log(streamStatus.isPlaying);
-                       
-                      timer = $interval(function() {
-                      self.updateStreamInfo();
-                       }, 5000);
 
-                     
                       myaudio.volume=1.0;
-                      
+
                   },
 
   playList: function() {
@@ -255,24 +323,22 @@ console.log(streamStatus.info.title);
                       currentTime=myaudio.currentTime;
                       myaudio.pause();
                       myaudio.src="";
-                      myaudio = null;
+                      myaudio.src = "";
                       myaudio = new Audio(myaudioURL);
                       myaudio.preload = "none";
                    },
 
   pause: function(){
 
-                    
-
-
                       myaudio.volume=0.0;
+                      self.streamBuffer("start");
                       streamStatus.isPlaying = false;
                       clearInterval(readyStateInterval);
                     },
 
   stop: function() {
                       myaudio.pause();
-                      myaudio = null;
+                      myaudio.src= "";
                       myaudio = new Audio(myaudioURL);
                       myaudio.volume=0.0;
                       streamStatus.isPlaying = false;
@@ -281,25 +347,25 @@ console.log(streamStatus.info.title);
 
 
   toggleplay: function() {
-   
+
                   if(streamStatus.isPlaying==false){
-                  
+
                     self.play();
-                  
+
                   }
                   else{
                     self.pause();
                   }
-                },                       
+                }
   };
 
-    var self=streamCtrl;
-    var service={
-      getStatus: streamCtrl.getStatus,
-      toggleplay: streamCtrl.toggleplay,
-      loadstream: streamCtrl.loadstream
-    }
-    return service;
+  var self=streamCtrl;
+  return service = {
+    getStatus: streamCtrl.getStatus,
+    toggleplay: streamCtrl.toggleplay,
+    loadstream: streamCtrl.loadstream
+  };
+
 
 });
 
