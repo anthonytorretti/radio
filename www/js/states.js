@@ -6,12 +6,16 @@ angular.module('starter')
  $stateProvider
 
   // setup an abstract state for the tabs directive
-    
+
     .state('menu', {
       url:'/menu',
       abstract:true,
       templateUrl: 'templates/menu.html',
-      controller: 'MainCtrl'
+      controller: 'MainCtrl',
+      css: 'resources/play-widget/css/play-widget.css'
+
+
+
     })
 
     .state('menu.tab', {
@@ -19,12 +23,13 @@ angular.module('starter')
      views:{
         'menuContent':{
         templateUrl: 'templates/tabs.html'
+
       }
     }
-    
+
   })
   // Each tab has its own nav history stack:
-  
+
   .state('menu.tab.dash', {
     url: '/dash',
     views: {

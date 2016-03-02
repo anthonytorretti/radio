@@ -45,10 +45,10 @@
 
     <ion-content>
       <ion-list>
-         <ion-item menu-close ng-click="streamService.loadstream('TopHits')" href="#/app/playlists">
+         <ion-item menu-close ng-click="loadstream('topHits')" href="#/app/playlists">
           Top Hits
         </ion-item>
-        <ion-item menu-close href="#/app/playlists">
+        <ion-item menu-close ng-click="loadstream('stream')"   href="#/app/playlists">
           Rock
         </ion-item>
         <ion-item menu-close href="#/app/search">

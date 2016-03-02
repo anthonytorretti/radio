@@ -49,20 +49,73 @@ angular.module('starter.services', [])
   };
 })
 
-.factory('streamService', function($http){
+.factory('ParseM3U',function($http,$q) {
+
+
+var ParseM3U={
+
+  getM3U: function (url) {
+    var deferred = $q.defer();
+    $http({
+      method: 'GET',
+      url: url,
+    }).then(function successCallback(response) {
+      console.log(response.data);
+      var playlist = self.parsePlaylist(response.data);
+      console.log("BEFORE REQUEST " + playlist);
+      deferred.resolve(playlist);
+
+
+      // this callback will be called asynchronously
+      // when the response is available
+    }, function errorCallback(response) {
+      deferred.reject(response.data);
+      // called asynchronously if an error occurs
+      // or server returns response with an error status.
+    });
+
+    return deferred.promise;
+  }
+  ,
+
+  parsePlaylist: function (response) {
+
+    var playlist = M3U.parse(response);
+    console.log(playlist[0].file);
+    return playlist;
+
+  }
+
+}
+
+  var self=ParseM3U;
+  return service = {
+    getM3U: ParseM3U.getM3U
+
+  };
 
 
 
-var myaudioURL = 'http://74.86.113.231:8000/stream;';
+} )
+
+.factory('streamService', function(ParseM3U,$http,$q){
+
+
+
+var myaudioURL = 'http://74.86.113.231:8000/stream';
 var metadataUrl = 'http://74.86.113.231:8000/7.html';
 var itunesSearchUrl = 'https://itunes.apple.com/search?term=';
-var myaudio = null;
+var myaudio = new Audio();
 var readyStateInterval = null;
 var isPlaying = false;
+var playing='none';
 var isLoaded = false;
 var timer=null;
 var bufferOn=true;
-
+var currentTime =null;
+var IsPlaylist =null;
+var PlayListArray = null;
+var PlayElement =0;
 var noInfo = {
   title:"loading",
   coverUrl:""
@@ -74,32 +127,46 @@ var noInfo = {
                 info:noInfo
               };
 
-
 var streamCtrl = {
 
+
   setStreamSource : function(genere) {
-    switch(genere){
+    var deferre = $q.defer();
+    switch(genere) {
       case 'topHits':
-        myaudioURL = 'http://74.86.113.231:8000/stream;';
+        var url = 'http://superadio.biz/playlist.m3u';
+        console.log("before");
+        ParseM3U.getM3U(url).then(function(data){
+          console.log("AFTER REQUEST "+data[0].file);
+          deferre.resolve(data);
+        });
         break;
+
+
       case 'rock':
         myaudioURL = 'http://74.86.113.231:8000/stream;';
+        deferre.resolve("false");
         break;
       case 'chillOut':
         myaudioURL = 'http://74.86.113.231:8000/stream;';
+        deferre.reject();
         break;
       case 'Metal':
         myaudioURL = 'http://74.86.113.231:8000/stream;';
+        deferre.reject();
         break;
       case 'ClassicheItaliane':
         myaudioURL = 'http://74.86.113.231:8000/stream;';
+        deferre.reject();
         break;
       default:
-            break;
 
 
-
+        deferre.resolve("false");
+        break;
     }
+
+    return deferre.promise;
   },
 
 
@@ -181,6 +248,7 @@ var streamCtrl = {
               break;
       case 'stop':
               console.log("BUFFER STOPPED");
+
               self.stop();
               bufferOn=false;
               break;
@@ -202,24 +270,31 @@ var streamCtrl = {
   },
 
   loadstream: function(genere) {
-                   console.log("Loading buffer stream URL "+myaudioURL);
+    myaudio.src="";
+                     playing=genere;
+                          //Set Stream Source Depending on User Choice
+                     self.setStreamSource(genere).then(function(playlist){
+                     console.log("stream source callback"+playlist);
+                     if ( playlist!="false"){
+                     //TELL SYSTEM THAT PLAYLIST IS PLAYING
+                       self.streamBuffer("keep");   //STOP BUFFER COUNTDOWN
+                       PlayListArray=playlist;      //COPY PLAYLIST TO SCOPE VARIABLE
+                                   //AUTOPLAY PLAYLIST AFTER LOAD
+                     }
+                     else{
+                       console.log("STREAM "+myaudioURL);
+                       bufferOn=true;
 
-                   bufferOn=true;
-                   self.streamBuffer("start");
+                       //self.streamBuffer("start");
+                       myaudio.src=myaudioURL;
 
-              //Set Stream Source Depending on User Choice
-                   self.setStreamSource(genere);
+                       myaudio.volume=0.0;
+                       myaudio.play();
+                     }
 
+                   });
 
-
-                   myaudio = null;
-                   myaudio = new Audio(myaudioURL);
-
-                   myaudio.volume=0.0;
-                   myaudio.play();
-
-
-                   readyStateInterval = setInterval(function(){
+                     readyStateInterval = setInterval(function(){
                      console.log("Streaming Connection State "+ myaudio.readyState);
                       if(myaudio.readyState==4){
 
@@ -232,7 +307,23 @@ var streamCtrl = {
 
 
 
+  changeStream: function(stream) {
 
+                    if (playing != stream) {
+                        console.log("CHANGING");
+                        if(stream!='stream') {
+                          console.log("PLAYLIST");
+                          IsPlaylist = true;
+                        }
+                        else {
+                          console.log("STREAM");
+                          IsPlaylist = false;
+                        }
+
+                      self.loadstream(stream);
+                      setTimeout(function(){ self.play(); }, 500);
+                      }
+  },
 
 
 
@@ -297,64 +388,104 @@ var streamCtrl = {
                         },
 
 
-  play: function(){
+  playStream: function(){
 
                     if(bufferOn==false){
                       //POSSIBILE AVVISO DI ATTENDERE CARICAMENTO//
-                      self.loadstream();
+                    //  self.loadstream();
                     }
-                      self.streamBuffer("keep");
+
+                     // self.streamBuffer("keep");
                       console.log(streamStatus.isPlaying);
                       streamStatus.isPlaying = true;
-                      console.log(streamStatus.isPlaying);
+
 
                       myaudio.volume=1.0;
+    console.log("VOLUME= "+myaudio.volume);
 
                   },
 
-  playList: function() {
-                      myaudio.currentTime=currentTime;
-                      myaudio.play();
-                  },
-
-
-
-  pauseList: function(){
-                      currentTime=myaudio.currentTime;
-                      myaudio.pause();
-                      myaudio.src="";
-                      myaudio.src = "";
-                      myaudio = new Audio(myaudioURL);
-                      myaudio.preload = "none";
-                   },
-
-  pause: function(){
+  pauseStream: function(){
 
                       myaudio.volume=0.0;
-                      self.streamBuffer("start");
+                     // self.streamBuffer("start");
                       streamStatus.isPlaying = false;
                       clearInterval(readyStateInterval);
-                    },
+  },
 
-  stop: function() {
-                      myaudio.pause();
+  stopStream: function() {
+
+                      self.pause();
                       myaudio.src= "";
                       myaudio = new Audio(myaudioURL);
                       myaudio.volume=0.0;
                       streamStatus.isPlaying = false;
                       clearInterval(readyStateInterval);
-                    },
+  },
 
+
+  playPlayList: function() {
+                      console.log("PLAYING "+PlayListArray[PlayElement].file);
+                      myaudio.src = PlayListArray[PlayElement].file;
+                      myaudio.currentTime=currentTime;
+                      streamStatus.isPlaying = true;
+                      myaudio.play();
+                      myaudio.volume=1.0;
+                  },
+
+
+  pausePlayList: function(){
+                      currentTime=myaudio.currentTime;
+                      myaudio.pause();
+                      myaudio.src="";
+                      streamStatus.isPlaying = false;
+                      myaudio = new Audio(PlayListArray[PlayElement].file);
+                      myaudio.preload = "none";
+                   },
+
+  stopPlayList: function(){
+    console.log("STOPLIST");
+                  currentTime=myaudio.currentTime;
+                  myaudio.pause();
+                  myaudio.src="";
+                  streamStatus.isPlaying = false;
+                  myaudio = new Audio(PlayListArray[PlayElement].file);
+                  myaudio.preload = "none";
+  },
+
+  play: function(){
+
+          if(IsPlaylist) {
+
+            self.playPlayList();
+          }
+          else {
+            self.playStream();
+          }
+  },
+
+  pause: function(){
+          if(IsPlaylist)
+            self.pausePlayList();
+          else
+            self.pauseStream();
+  },
+
+  stop: function(){
+    if(IsPlaylist)
+      self.stopPlayList();
+    else
+      self.stopStream();
+  },
 
   toggleplay: function() {
 
                   if(streamStatus.isPlaying==false){
 
-                    self.play();
-
+                          self.play();
                   }
                   else{
-                    self.pause();
+                          self.pause();
                   }
                 }
   };
@@ -363,7 +494,9 @@ var streamCtrl = {
   return service = {
     getStatus: streamCtrl.getStatus,
     toggleplay: streamCtrl.toggleplay,
-    loadstream: streamCtrl.loadstream
+    loadstream: streamCtrl.loadstream,
+    changeStream: streamCtrl.changeStream,
+    playPlayList: streamCtrl.PlayplayList
   };
 
 

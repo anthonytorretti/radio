@@ -15,8 +15,12 @@ angular.module('starter.controllers',[])
                // var alertshowed=false;
 
 
-                $scope.loadstream=streamService.loadstream();
+                streamService.loadstream('stream');
 
+
+               $scope.loadstream=function(stream){
+                 streamService.changeStream(stream);
+               }
                      //START GETTING STREAM INFO
                 $scope.streamInfo=streamService.getStatus();
                 timer = $interval(function() {
