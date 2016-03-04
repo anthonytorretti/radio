@@ -265,6 +265,7 @@ var streamCtrl = {
   },
 
   loadstream: function(genere) {
+                    var deferred= $q.defer();
                      currentTime=0;
                      myaudio.src="";
                      playing=genere;
@@ -274,7 +275,8 @@ var streamCtrl = {
                      if ( playlist!="false"){
                       // self.streamBuffer("keep");   //STOP BUFFER COUNTDOWN
                        PlayListArray=playlist;      //COPY PLAYLIST TO SCOPE VARIABLE
-                       self.play();
+                       //self.play();
+                       deferred.resolve();
                      }
                      else{
                        console.log("STREAM "+myaudioURL);
@@ -284,10 +286,12 @@ var streamCtrl = {
                        myaudio.volume=0.0;
                        myaudio.preload="none";
                        myaudio.play();
+                       deferred.resolve();
                      }
 
+                   
                    });
-
+return deferred.promise;
                     /* readyStateInterval = setInterval(function(){
                      console.log("Streaming Connection State "+ myaudio.readyState);
                       if(myaudio.readyState==4){
@@ -304,15 +308,18 @@ var streamCtrl = {
   changeStream: function(stream) {
 
                     if (playing!=stream) {
-                        console.log("CHANGING TO "+stream);
+                       // console.log("CHANGING TO "+stream);
                         if(stream!='stream') {
                          IsPlaylist = true;
                         }
                         else {
                          IsPlaylist = false;
                         }
+                        
 
-                      self.loadstream(stream);
+                      self.loadstream(stream).then(function(resp){
+                        self.play();
+                      });
                       //setTimeout(function(){ self.play(); }, 3000);
                       }
   },
@@ -417,25 +424,26 @@ var streamCtrl = {
   playPlayList: function() {
                     // console.log("PLAYING "+PlayListArray[PlayElement].file);
                      if(currentTime==0) {
+                      myaudio.preload = "none";
                        myaudio.src = PlayListArray[PlayElement].file;
-                     }
 
-                      myaudio.currentTime=currentTime;
-    alert(currentTime);
+                     };
+
+                     // myaudio.currentTime=currentTime;
+    
                       streamStatus.isPlaying = true;
                       myaudio.play();
-    myaudio.currentTime=currentTime;
-                      myaudio.volume=1.0;
+                      
                   },
 
 
   pausePlayList: function(){
                       currentTime=myaudio.currentTime;
                       myaudio.pause();
-                      myaudio.src="";
+                      //myaudio.src="";
                       streamStatus.isPlaying = false;
-                     myaudio = new Audio(PlayListArray[PlayElement].file);
-                      myaudio.preload = "none";
+                   //  myaudio = new Audio(PlayListArray[PlayElement].file);
+                    //  myaudio.preload = "none";
                    },
 
   stopPlayList: function(){
@@ -495,4 +503,3 @@ var streamCtrl = {
 
 
 });
-
