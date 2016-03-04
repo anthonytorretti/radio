@@ -274,6 +274,7 @@ var streamCtrl = {
                      if ( playlist!="false"){
                       // self.streamBuffer("keep");   //STOP BUFFER COUNTDOWN
                        PlayListArray=playlist;      //COPY PLAYLIST TO SCOPE VARIABLE
+                       self.play();
                      }
                      else{
                        console.log("STREAM "+myaudioURL);
@@ -281,6 +282,7 @@ var streamCtrl = {
                       //self.streamBuffer("start");
                        myaudio.src=myaudioURL;
                        myaudio.volume=0.0;
+                       myaudio.preload="none";
                        myaudio.play();
                      }
 
@@ -311,7 +313,7 @@ var streamCtrl = {
                         }
 
                       self.loadstream(stream);
-                      setTimeout(function(){ self.play(); }, 500);
+                      //setTimeout(function(){ self.play(); }, 3000);
                       }
   },
 
@@ -413,7 +415,7 @@ var streamCtrl = {
 
 
   playPlayList: function() {
-                    //  console.log("PLAYING "+PlayListArray[PlayElement].file);
+                    // console.log("PLAYING "+PlayListArray[PlayElement].file);
                      if(currentTime==0) {
                        myaudio.src = PlayListArray[PlayElement].file;
                      }
@@ -422,7 +424,7 @@ var streamCtrl = {
     alert(currentTime);
                       streamStatus.isPlaying = true;
                       myaudio.play();
-    //myaudio.currentTime=currentTime;
+    myaudio.currentTime=currentTime;
                       myaudio.volume=1.0;
                   },
 
@@ -430,10 +432,10 @@ var streamCtrl = {
   pausePlayList: function(){
                       currentTime=myaudio.currentTime;
                       myaudio.pause();
-                  //    myaudio.src="";
+                      myaudio.src="";
                       streamStatus.isPlaying = false;
-                   //   myaudio = new Audio(PlayListArray[PlayElement].file);
-                     // myaudio.preload = "none";
+                     myaudio = new Audio(PlayListArray[PlayElement].file);
+                      myaudio.preload = "none";
                    },
 
   stopPlayList: function(){
