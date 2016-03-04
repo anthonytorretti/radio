@@ -2,24 +2,14 @@ angular.module('starter.controllers',[])
 
 .controller('MainCtrl', function($scope,$rootScope,$css,$interval,streamService,$timeout) {
 
-
-
-
-
-
   //CONTROLLER OF ABSTRACT METHOD PRESENT IN ALL CONTROLLERS////
             //PLAY CONTROL OF GENERAL PLAYER//
 
-
-
                // var alertshowed=false;
+               streamService.loadstream('stream');
 
-
-                streamService.loadstream('stream');
-
-
-               $scope.loadstream=function(stream){
-                 streamService.changeStream(stream);
+               $scope.loadstream=function(genere){
+                 streamService.changeStream(genere);
                }
                      //START GETTING STREAM INFO
                 $scope.streamInfo=streamService.getStatus();
@@ -60,9 +50,7 @@ angular.module('starter.controllers',[])
                   else{
                     $scope.hide=false;
                   }
-    // transitionTo() promise will be rejected with
-    // a 'transition prevented' error
-})
+              })
 })
 
 .controller('DashCtrl', function($scope) {

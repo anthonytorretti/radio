@@ -49,10 +49,12 @@ angular.module('starter.services', [])
   };
 })
 
+    /* SERVICE PARSE M3U GIVE IN
+      Input: http:\\someserver\file.m3u
+      Returns: Json Formatted M3u file*/
 .factory('ParseM3U',function($http,$q) {
 
-
-var ParseM3U={
+  var ParseM3U={
 
   getM3U: function (url) {
     var deferred = $q.defer();
@@ -101,7 +103,6 @@ var ParseM3U={
 .factory('streamService', function(ParseM3U,$http,$q){
 
 
-
 var myaudioURL = 'http://74.86.113.231:8000/stream';
 var metadataUrl = 'http://74.86.113.231:8000/7.html';
 var itunesSearchUrl = 'https://itunes.apple.com/search?term=';
@@ -112,7 +113,7 @@ var playing='none';
 var isLoaded = false;
 var timer=null;
 var bufferOn=true;
-var currentTime =null;
+var currentTime =0;
 var IsPlaylist =null;
 var PlayListArray = null;
 var PlayElement =0;
@@ -264,6 +265,7 @@ var streamCtrl = {
   },
 
   loadstream: function(genere) {
+                     currentTime=0;
                      myaudio.src="";
                      playing=genere;
                           //Set Stream Source Depending on User Choice
@@ -411,11 +413,16 @@ var streamCtrl = {
 
 
   playPlayList: function() {
-                      console.log("PLAYING "+PlayListArray[PlayElement].file);
-                      myaudio.src = PlayListArray[PlayElement].file;
+                    //  console.log("PLAYING "+PlayListArray[PlayElement].file);
+                     if(currentTime==0) {
+                       myaudio.src = PlayListArray[PlayElement].file;
+                     }
+
                       myaudio.currentTime=currentTime;
+    alert(currentTime);
                       streamStatus.isPlaying = true;
                       myaudio.play();
+    //myaudio.currentTime=currentTime;
                       myaudio.volume=1.0;
                   },
 
@@ -423,10 +430,10 @@ var streamCtrl = {
   pausePlayList: function(){
                       currentTime=myaudio.currentTime;
                       myaudio.pause();
-                      myaudio.src="";
+                  //    myaudio.src="";
                       streamStatus.isPlaying = false;
-                      myaudio = new Audio(PlayListArray[PlayElement].file);
-                      myaudio.preload = "none";
+                   //   myaudio = new Audio(PlayListArray[PlayElement].file);
+                     // myaudio.preload = "none";
                    },
 
   stopPlayList: function(){
