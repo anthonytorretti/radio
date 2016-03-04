@@ -58,7 +58,7 @@ var ParseM3U={
     var deferred = $q.defer();
     $http({
       method: 'GET',
-      url: url,
+      url: url
     }).then(function successCallback(response) {
       console.log(response.data);
       var playlist = self.parsePlaylist(response.data);
@@ -86,7 +86,7 @@ var ParseM3U={
 
   }
 
-}
+};
 
   var self=ParseM3U;
   return service = {
@@ -135,14 +135,10 @@ var streamCtrl = {
     switch(genere) {
       case 'topHits':
         var url = 'http://superadio.biz/playlist.m3u';
-        console.log("before");
         ParseM3U.getM3U(url).then(function(data){
-          console.log("AFTER REQUEST "+data[0].file);
-          deferre.resolve(data);
+        deferre.resolve(data);
         });
         break;
-
-
       case 'rock':
         myaudioURL = 'http://74.86.113.231:8000/stream;';
         deferre.resolve("false");
@@ -160,8 +156,6 @@ var streamCtrl = {
         deferre.reject();
         break;
       default:
-
-
         deferre.resolve("false");
         break;
     }
@@ -270,36 +264,32 @@ var streamCtrl = {
   },
 
   loadstream: function(genere) {
-    myaudio.src="";
+                     myaudio.src="";
                      playing=genere;
                           //Set Stream Source Depending on User Choice
                      self.setStreamSource(genere).then(function(playlist){
-                     console.log("stream source callback"+playlist);
+
                      if ( playlist!="false"){
-                     //TELL SYSTEM THAT PLAYLIST IS PLAYING
-                       self.streamBuffer("keep");   //STOP BUFFER COUNTDOWN
+                      // self.streamBuffer("keep");   //STOP BUFFER COUNTDOWN
                        PlayListArray=playlist;      //COPY PLAYLIST TO SCOPE VARIABLE
-                                   //AUTOPLAY PLAYLIST AFTER LOAD
                      }
                      else{
                        console.log("STREAM "+myaudioURL);
                        bufferOn=true;
-
-                       //self.streamBuffer("start");
+                      //self.streamBuffer("start");
                        myaudio.src=myaudioURL;
-
                        myaudio.volume=0.0;
                        myaudio.play();
                      }
 
                    });
 
-                     readyStateInterval = setInterval(function(){
+                    /* readyStateInterval = setInterval(function(){
                      console.log("Streaming Connection State "+ myaudio.readyState);
                       if(myaudio.readyState==4){
 
                        }
-                     },5000);
+                     },5000);*/
 
 
                   //VERIFICA ERRORI CONNESSIONE DI RETE
@@ -309,15 +299,13 @@ var streamCtrl = {
 
   changeStream: function(stream) {
 
-                    if (playing != stream) {
-                        console.log("CHANGING");
+                    if (playing!=stream) {
+                        console.log("CHANGING TO "+stream);
                         if(stream!='stream') {
-                          console.log("PLAYLIST");
-                          IsPlaylist = true;
+                         IsPlaylist = true;
                         }
                         else {
-                          console.log("STREAM");
-                          IsPlaylist = false;
+                         IsPlaylist = false;
                         }
 
                       self.loadstream(stream);
@@ -398,10 +386,8 @@ var streamCtrl = {
                      // self.streamBuffer("keep");
                       console.log(streamStatus.isPlaying);
                       streamStatus.isPlaying = true;
-
-
                       myaudio.volume=1.0;
-    console.log("VOLUME= "+myaudio.volume);
+
 
                   },
 
@@ -444,7 +430,7 @@ var streamCtrl = {
                    },
 
   stopPlayList: function(){
-    console.log("STOPLIST");
+                  console.log("STOPLIST");
                   currentTime=myaudio.currentTime;
                   myaudio.pause();
                   myaudio.src="";
@@ -465,10 +451,10 @@ var streamCtrl = {
   },
 
   pause: function(){
-          if(IsPlaylist)
-            self.pausePlayList();
-          else
-            self.pauseStream();
+    if(IsPlaylist)
+    self.pausePlayList();
+    else
+   self.pauseStream();
   },
 
   stop: function(){
@@ -495,8 +481,7 @@ var streamCtrl = {
     getStatus: streamCtrl.getStatus,
     toggleplay: streamCtrl.toggleplay,
     loadstream: streamCtrl.loadstream,
-    changeStream: streamCtrl.changeStream,
-    playPlayList: streamCtrl.PlayplayList
+    changeStream: streamCtrl.changeStream
   };
 
 
