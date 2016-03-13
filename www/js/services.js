@@ -54,6 +54,7 @@ angular.module('starter.services', [])
       Returns: Json Formatted M3u file*/
 .factory('ParseM3U',function($http,$q) {
 
+  var list=null;
   var ParseM3U={
 
   getM3U: function (url) {
@@ -83,16 +84,26 @@ angular.module('starter.services', [])
   parsePlaylist: function (response) {
 
     var playlist = M3U.parse(response);
+    ParseM3U.setList(playlist);
     console.log(playlist[0].file);
     return playlist;
 
-  }
+  },
+
+   setList: function(file){
+     list=file;
+   },
+
+   getList: function(){
+     return list;
+   }
 
 };
 
   var self=ParseM3U;
   return service = {
-    getM3U: ParseM3U.getM3U
+    getM3U: ParseM3U.getM3U,
+    getList: ParseM3U.getList
 
   };
 
@@ -123,6 +134,7 @@ var noInfo = {
 };
 
  var streamStatus={
+                songid: PlayElement+1,
                 isLoaded:isLoaded,
                 isPlaying:isPlaying,
                 info:noInfo
@@ -289,7 +301,7 @@ var streamCtrl = {
                        deferred.resolve();
                      }
 
-                   
+
                    });
 return deferred.promise;
                     /* readyStateInterval = setInterval(function(){
@@ -306,7 +318,7 @@ return deferred.promise;
 
 
   changeStream: function(stream) {
-
+    var deferred= $q.defer();
                     if (playing!=stream) {
                        // console.log("CHANGING TO "+stream);
                         if(stream!='stream') {
@@ -315,13 +327,23 @@ return deferred.promise;
                         else {
                          IsPlaylist = false;
                         }
-                        
+
 
                       self.loadstream(stream).then(function(resp){
                         self.play();
+                        deferred.resolve();
                       });
                       //setTimeout(function(){ self.play(); }, 3000);
                       }
+    return deferred.promise;
+  },
+
+  changeSong: function(id){
+    PlayElement=id;
+    currentTime==0;
+    self.stopPlayList();
+    self.playPlayList();
+
   },
 
 
@@ -429,11 +451,23 @@ return deferred.promise;
 
                      };
 
-                     // myaudio.currentTime=currentTime;
-    
+
                       streamStatus.isPlaying = true;
                       myaudio.play();
-                      
+
+
+    myaudio.onended = function() {
+      if(PlayElement < PlayListArray.length-1) {
+
+        self.nextPlaylist();
+      }
+      else {
+        PlayElement = -1;
+        self.nextPlaylist();
+      }
+
+    };
+
                   },
 
 
@@ -454,6 +488,20 @@ return deferred.promise;
                   streamStatus.isPlaying = false;
                   myaudio = new Audio(PlayListArray[PlayElement].file);
                   myaudio.preload = "none";
+  },
+
+  nextPlaylist: function(){
+    currentTime==0;
+    PlayElement++;
+    self.stopPlayList();
+    self.playPlayList();
+  },
+
+  previousPlaylist: function(){
+    currentTime==0;
+    PlayElement--;
+    self.stopPlayList();
+    self.playPlayList();
   },
 
   play: function(){
@@ -498,7 +546,8 @@ return deferred.promise;
     getStatus: streamCtrl.getStatus,
     toggleplay: streamCtrl.toggleplay,
     loadstream: streamCtrl.loadstream,
-    changeStream: streamCtrl.changeStream
+    changeStream: streamCtrl.changeStream,
+    changeSong: streamCtrl.changeSong
   };
 
 

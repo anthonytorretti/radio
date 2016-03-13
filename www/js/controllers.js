@@ -1,6 +1,6 @@
 angular.module('starter.controllers',[])
 
-.controller('MainCtrl', function($scope,$rootScope,$css,$interval,streamService,$timeout) {
+.controller('MainCtrl', function($scope,$rootScope,$css,$interval,streamService,ParseM3U,$timeout) {
 
   //CONTROLLER OF ABSTRACT METHOD PRESENT IN ALL CONTROLLERS////
             //PLAY CONTROL OF GENERAL PLAYER//
@@ -9,7 +9,11 @@ angular.module('starter.controllers',[])
                streamService.loadstream('stream');
 
                $scope.loadstream=function(genere){
-                 streamService.changeStream(genere);
+                 streamService.changeStream(genere).then(function(){
+                   console.log(ParseM3U.getList());
+                   $rootScope.playlist=ParseM3U.getList();
+                 });
+
                }
                      //START GETTING STREAM INFO
                 $scope.streamInfo=streamService.getStatus();
@@ -105,7 +109,7 @@ angular.module('starter.controllers',[])
   };
 })
 
-.controller('StreamController', function($scope,$interval,streamService,$css,$timeout) {
+.controller('StreamController', function($scope,$rootScope,$interval,streamService,$css,$timeout) {
 
 
 
@@ -114,8 +118,7 @@ angular.module('starter.controllers',[])
 var streamStatus=streamService.getStatus();
 
   $timeout(function(){
-
-   $scope.vm=streamStatus;
+    $scope.vm=streamStatus;
   },50);
 
    timer = $interval(function() {
@@ -125,6 +128,12 @@ var streamStatus=streamService.getStatus();
   $scope.play= function(){
     streamService.toggleplay();
     $scope.vm=streamService.getStatus();
+  },
+
+  $scope.changeSong= function(id){
+      id=id-1;
+
+      streamService.changeSong(id);
   }
 
   //TEST//
