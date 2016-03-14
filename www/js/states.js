@@ -69,6 +69,16 @@ angular.module('starter')
     }
   })
 
+   .state('menu.tab.playlist', {
+    url: '/playlist',
+    views: {
+      'playlist': {
+        templateUrl: 'templates/playlist.html',
+        controller: 'PlaylistController'
+      }
+     }
+    })
+
   .state('menu.tab.stream', {
     url: '/stream',
     views: {
@@ -76,8 +86,8 @@ angular.module('starter')
         templateUrl: 'templates/tab-stream.html',
         controller: 'StreamController as vm'
       }
-    }
-  });
+     }
+    }),
 
 
 

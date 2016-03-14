@@ -128,13 +128,18 @@ var currentTime =0;
 var IsPlaylist =null;
 var PlayListArray = null;
 var PlayElement =0;
+var Genere=null;
 var noInfo = {
   title:"loading",
   coverUrl:""
 };
 
+var playlistInfo={
+                genere: Genere,
+                songid: PlayElement+1
+};
+
  var streamStatus={
-                songid: PlayElement+1,
                 isLoaded:isLoaded,
                 isPlaying:isPlaying,
                 info:noInfo
@@ -146,25 +151,30 @@ var streamCtrl = {
   setStreamSource : function(genere) {
     var deferre = $q.defer();
     switch(genere) {
-      case 'topHits':
+      case 'tophits':
+      playlistInfo.genere="Top Hits";
         var url = 'http://superadio.biz/playlist.m3u';
         ParseM3U.getM3U(url).then(function(data){
         deferre.resolve(data);
         });
         break;
       case 'rock':
+       playlistInfo.genere="Rock";
         myaudioURL = 'http://74.86.113.231:8000/stream;';
         deferre.resolve("false");
         break;
-      case 'chillOut':
+      case 'chillout':
+       Genere="Chillout";
         myaudioURL = 'http://74.86.113.231:8000/stream;';
         deferre.reject();
         break;
-      case 'Metal':
+      case 'metal':
+       Genere="Metal";
         myaudioURL = 'http://74.86.113.231:8000/stream;';
         deferre.reject();
         break;
-      case 'ClassicheItaliane':
+      case 'classicheita':
+       Genere="Classiche Italiane";
         myaudioURL = 'http://74.86.113.231:8000/stream;';
         deferre.reject();
         break;
@@ -371,6 +381,9 @@ return deferred.promise;
                           }
                           return parts[6];
                         },
+  getPlaylistInfo: function(){
+    return playlistInfo;
+  },
 
   getStreamInfo: function() {
 
@@ -543,6 +556,7 @@ return deferred.promise;
 
   var self=streamCtrl;
   return service = {
+    getPlaylistInfo: streamCtrl.getPlaylistInfo,
     getStatus: streamCtrl.getStatus,
     toggleplay: streamCtrl.toggleplay,
     loadstream: streamCtrl.loadstream,

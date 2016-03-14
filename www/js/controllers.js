@@ -11,7 +11,7 @@ angular.module('starter.controllers',[])
                $scope.loadstream=function(genere){
                  streamService.changeStream(genere).then(function(){
                    console.log(ParseM3U.getList());
-                   $rootScope.playlist=ParseM3U.getList();
+                   $rootScope.playlist=ParseM3U.getList();      
                  });
 
                }
@@ -109,6 +109,8 @@ angular.module('starter.controllers',[])
   };
 })
 
+
+
 .controller('StreamController', function($scope,$rootScope,$interval,streamService,$css,$timeout) {
 
 
@@ -136,12 +138,27 @@ var streamStatus=streamService.getStatus();
       streamService.changeSong(id);
   }
 
-  //TEST//
 
 var myaudioURL = 'http://74.86.113.231:8000/;';
 
+})
 
 
 
+
+.controller('PlaylistController', function($scope,$rootScope,$css,streamService,$timeout) {
+
+
+                    
+   $scope.info=streamService.getPlaylistInfo();
+
+  
+// *********************************************************************
+     
+  $scope.changeSong= function(id){
+      id=id-1;
+
+      streamService.changeSong(id);
+  }
 
 });
