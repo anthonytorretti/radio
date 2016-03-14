@@ -125,7 +125,7 @@ var isLoaded = false;
 var timer=null;
 var bufferOn=true;
 var currentTime =0;
-var IsPlaylist =null;
+var IsPlaylist =false;
 var PlayListArray = null;
 var PlayElement =0;
 var Genere=null;
@@ -140,6 +140,7 @@ var playlistInfo={
 };
 
  var streamStatus={
+                isPlaylist:IsPlaylist,
                 isLoaded:isLoaded,
                 isPlaying:isPlaying,
                 info:noInfo
@@ -300,7 +301,7 @@ var streamCtrl = {
                        //self.play();
                        deferred.resolve();
                      }
-                     else{
+                     else{/radio/
                        console.log("STREAM "+myaudioURL);
                        bufferOn=true;
                       //self.streamBuffer("start");
@@ -332,10 +333,10 @@ return deferred.promise;
                     if (playing!=stream) {
                        // console.log("CHANGING TO "+stream);
                         if(stream!='stream') {
-                         IsPlaylist = true;
+                         streamStatus.IsPlaylist = true;
                         }
                         else {
-                         IsPlaylist = false;
+                         streamStatus.IsPlaylist = false;
                         }
 
 
@@ -464,7 +465,7 @@ return deferred.promise;
 
                      };
 
-
+    myaudio.volume=1.0;
                       streamStatus.isPlaying = true;
                       myaudio.play();
 
@@ -519,7 +520,7 @@ return deferred.promise;
 
   play: function(){
 
-          if(IsPlaylist) {
+          if(streamStatus.IsPlaylist) {
 
             self.playPlayList();
           }
@@ -529,14 +530,14 @@ return deferred.promise;
   },
 
   pause: function(){
-    if(IsPlaylist)
+    if(streamStatus.IsPlaylist)
     self.pausePlayList();
     else
    self.pauseStream();
   },
 
   stop: function(){
-    if(IsPlaylist)
+    if(streamStatus.IsPlaylist)
       self.stopPlayList();
     else
       self.stopStream();
