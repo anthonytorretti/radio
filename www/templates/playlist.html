@@ -2,7 +2,8 @@
 <ion-content>
    <ion-list>
       <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="song in playlist" type="item-text-wrap" ng-click="changeSong(song.length)">
-        <img ng-src="{{}}">
+        <img ng-src="{{getcover(song.artist,song.title)}}">
+        
         <h2>{{song.artist}}</h2>
         <p>{{song.title}}</p>
         <i class="icon ion-chevron-right icon-accessory"></i>

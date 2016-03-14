@@ -8,10 +8,13 @@ angular.module('starter.controllers',[])
                // var alertshowed=false;
                streamService.loadstream('stream');
 
-               $scope.loadstream=function(genere){
+               $scope.changestream=function(genere){
                  streamService.changeStream(genere).then(function(){
                    console.log(ParseM3U.getList());
-                   $rootScope.playlist=ParseM3U.getList();      
+                   $rootScope.playlist=ParseM3U.getList();   
+
+
+    
                  });
 
                }
@@ -113,11 +116,12 @@ angular.module('starter.controllers',[])
 
 .controller('StreamController', function($scope,$rootScope,$interval,streamService,$css,$timeout) {
 
-
+ 
 
 // *********************************************************************
 
 var streamStatus=streamService.getStatus();
+
 
   $timeout(function(){
     $scope.vm=streamStatus;
@@ -128,7 +132,18 @@ var streamStatus=streamService.getStatus();
   }, 5000);
 
   $scope.play= function(){
-    streamService.toggleplay();
+    
+  if(streamStatus.isPlayList){
+    
+    streamService.changestream("stream");
+  }
+  else{
+
+      streamService.toggleplay();
+
+  }
+   
+
     $scope.vm=streamService.getStatus();
   },
 
@@ -148,11 +163,20 @@ var myaudioURL = 'http://74.86.113.231:8000/;';
 
 .controller('PlaylistController', function($scope,$rootScope,$css,streamService,$timeout) {
 
+            
+  $scope.getcover= function(artist,title){
 
-                    
-   $scope.info=streamService.getPlaylistInfo();
-
+     streamService.getCoverPlaylist(artist+ " " +title).then(function(cover){
+    return cover;
   
+
+
+  });  
+   }
+
+   
+   //$scope.cover=streamService.getCoverPlaylist(info.title,info.artist);
+ 
 // *********************************************************************
      
   $scope.changeSong= function(id){
