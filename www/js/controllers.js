@@ -144,12 +144,6 @@ var streamStatus=streamService.getStatus();
 
 
     $scope.vm=streamService.getStatus();
-  },
-
-  $scope.changeSong= function(id){
-      id=id-1;
-
-      streamService.changeSong(id);
   }
 
 
@@ -167,7 +161,7 @@ var myaudioURL = 'http://74.86.113.231:8000/;';
   $scope.$on('updateplaylist', function(event,playlist){
     $scope.playlist=playlist;
     angular.forEach(playlist, function(info){
-      streamService.getCoverPlaylist(info.title,info.artist).then(function(cover){
+      streamService.getCoverPlaylist(info.artist,info.title).then(function(cover){
 
         info.cover = cover;
       })

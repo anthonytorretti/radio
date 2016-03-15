@@ -359,7 +359,7 @@ return deferred.promise;
 
 
   getCoverPlaylist: function(title){
-    defaultUrl="/img/icon.png";
+    defaultUrl="./img/icon.png";
 
       return $http.get(itunesSearchUrl + title).then(function(response) {
                             var item = response.data.results[0];

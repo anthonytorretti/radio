@@ -1,12 +1,13 @@
    <ion-view view-title="{{info.genere}}">
 <ion-content>
+
    <ion-list>
-      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="song in playlist" type="item-text-wrap" ng-click="changeSong(song.length)">
+      <ion-item class="item-remove-animate item item-thumbnail-left" ng-repeat="song in playlist" type="item-text-wrap" ng-click="changeSong(song.length)">
         <img src="{{song.cover}}">
+        <img ng-src="{{getcover(song.artist,song.title)}}">
 
         <h2>{{song.artist}}</h2>
         <p>{{song.title}}</p>
-        <i class="icon ion-chevron-right icon-accessory"></i>
 
         <ion-option-button class="button-assertive" ng-click="remove(chat)">
           Delete
