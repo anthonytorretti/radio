@@ -360,15 +360,13 @@ return deferred.promise;
 
   getCoverPlaylist: function(title){
     defaultUrl="/img/icon.png";
-    var resolutionRegex = /100x100/;
+
       return $http.get(itunesSearchUrl + title).then(function(response) {
                             var item = response.data.results[0];
-                            
                             if (!item) {
                               return defaultUrl ;
                             }
-console.log(item.artworkUrl100);
-                    return item.artworkUrl100;
+                              return item.artworkUrl100;
 
   });
 },

@@ -11,10 +11,9 @@ angular.module('starter.controllers',[])
                $scope.changestream=function(genere){
                  streamService.changeStream(genere).then(function(){
                    console.log(ParseM3U.getList());
-                   $rootScope.playlist=ParseM3U.getList();   
+                   playlist=ParseM3U.getList();
+                   $scope.$broadcast('updateplaylist',playlist);
 
-
-    
                  });
 
                }
@@ -116,7 +115,7 @@ angular.module('starter.controllers',[])
 
 .controller('StreamController', function($scope,$rootScope,$interval,streamService,$css,$timeout) {
 
- 
+
 
 // *********************************************************************
 
@@ -132,9 +131,9 @@ var streamStatus=streamService.getStatus();
   }, 5000);
 
   $scope.play= function(){
-    
+
   if(streamStatus.isPlayList){
-    
+
     streamService.changestream("stream");
   }
   else{
@@ -142,7 +141,7 @@ var streamStatus=streamService.getStatus();
       streamService.toggleplay();
 
   }
-   
+
 
     $scope.vm=streamService.getStatus();
   },
@@ -161,24 +160,28 @@ var myaudioURL = 'http://74.86.113.231:8000/;';
 
 
 
-.controller('PlaylistController', function($scope,$rootScope,$css,streamService,$timeout) {
-
-            
-  $scope.getcover= function(artist,title){
-
-     streamService.getCoverPlaylist(artist+ " " +title).then(function(cover){
-    return cover;
-  
+.controller('PlaylistController', function($scope,$rootScope,$css,streamService,$timeout,ParseM3U) {
 
 
-  });  
-   }
 
-   
-   //$scope.cover=streamService.getCoverPlaylist(info.title,info.artist);
- 
+  $scope.$on('updateplaylist', function(event,playlist){
+    $scope.playlist=playlist;
+    angular.forEach(playlist, function(info){
+      streamService.getCoverPlaylist(info.title,info.artist).then(function(cover){
+
+        info.cover = cover;
+      })
+    });
+
+    $scope.info=streamService.getPlaylistInfo();
+
+   });
+
+
+   //$scope.cover=
+
 // *********************************************************************
-     
+
   $scope.changeSong= function(id){
       id=id-1;
 
