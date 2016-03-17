@@ -137,6 +137,8 @@ var noInfo = {
 };
 
 var playlistInfo={
+                title: null,
+                artist: null,
                 genere: Genere,
                 songid: PlayElement+1
 };
@@ -477,6 +479,11 @@ return deferred.promise;
                      if(currentTime==0) {
                       myaudio.preload = "none";
                        myaudio.src = PlayListArray[PlayElement].file;
+                       
+                       playlistInfo.artist=PlayListArray[PlayElement].artist;
+                       playlistInfo.title=PlayListArray[PlayElement].title;
+                       
+
 
                      };
 console.log( "PLAYYYY"+streamStatus.IsPlaylist);
