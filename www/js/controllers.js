@@ -119,35 +119,50 @@ angular.module('starter.controllers',[])
 
 // *********************************************************************
 
-var streamStatus=streamService.getStatus();
+
+  var status=angular.copy(streamService.getStatus());
 
 
   $timeout(function(){
-    $scope.vm=streamStatus;
+
+    $scope.pl=status;
+    if(streamService.getStatus()){
+      $scope.pl.isPlaying=false;
+
+    }
   },50);
 
+
+
    timer = $interval(function() {
-   $scope.vm=streamService.getStatus();
+   //$scope.vm=streamService.getStatus();
   }, 5000);
+
+
 
   $scope.play= function(){
 
-  if(streamStatus.isPlayList){
+    console.log(streamService.getStatus());
 
-    streamService.changestream("stream");
+    if($scope.IsPlaylist){
+
+    streamService.changeStream("stream");
+
   }
   else{
-
       streamService.toggleplay();
-
   }
-
 
     $scope.vm=streamService.getStatus();
-  }
+  };
+
+  $scope.changeSong= function(id){
+      id=id-1;
+
+      streamService.changeSong(id);
+  };
 
 
-var myaudioURL = 'http://74.86.113.231:8000/;';
 
 })
 

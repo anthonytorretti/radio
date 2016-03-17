@@ -65,7 +65,9 @@ angular.module('starter.services', [])
     }).then(function successCallback(response) {
       console.log(response.data);
       var playlist = self.parsePlaylist(response.data);
-      console.log("BEFORE REQUEST " + playlist);
+        angular.forEach(playlist, function(info){
+          info.cover = "./img/icon.png";
+        });
       deferred.resolve(playlist);
 
 
@@ -139,8 +141,8 @@ var playlistInfo={
                 songid: PlayElement+1
 };
 
- var streamStatus={
-                isPlaylist:IsPlaylist,
+  var streamStatus={
+                IsPlaylist:null,
                 isLoaded:isLoaded,
                 isPlaying:isPlaying,
                 info:noInfo
@@ -334,9 +336,11 @@ return deferred.promise;
                        // console.log("CHANGING TO "+stream);
                         if(stream!='stream') {
                          streamStatus.IsPlaylist = true;
+                          console.log("PLAYLIST SELEZIONAT0"+streamStatus.IsPlaylist);
                         }
                         else {
                          streamStatus.IsPlaylist = false;
+                          console.log("STREAMING SELEZIONAT0");
                         }
 
 
@@ -475,7 +479,7 @@ return deferred.promise;
                        myaudio.src = PlayListArray[PlayElement].file;
 
                      };
-
+console.log( "PLAYYYY"+streamStatus.IsPlaylist);
     myaudio.volume=1.0;
                       streamStatus.isPlaying = true;
                       myaudio.play();
@@ -568,6 +572,7 @@ return deferred.promise;
 
   var self=streamCtrl;
   return service = {
+    IsPlaylist: streamStatus.IsPlaylist,
     getPlaylistInfo: streamCtrl.getPlaylistInfo,
     getStatus: streamCtrl.getStatus,
     toggleplay: streamCtrl.toggleplay,

@@ -84,7 +84,7 @@ angular.module('starter')
     views: {
       'tab-stream': {
         templateUrl: 'templates/tab-stream.html',
-        controller: 'StreamController as vm'
+        controller: 'StreamController'
       }
      }
     }),
