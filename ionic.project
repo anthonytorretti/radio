@@ -1,4 +1,8 @@
 {
   "name": "Radio Strinella",
-  "app_id": "932fcdf3"
+  "app_id": "932fcdf3",
+  "serve":
+  {"defaultBrowser" :  "chrome"}
 }
+
+
