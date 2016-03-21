@@ -1,6 +1,6 @@
 /* Empty. Add your own CSS if you like */
 .stream-background {
-  background: url('../images/ionic.jpg') center center;
+  background: url('../img/ionic.png') center center;
   background-size: cover;
 }
 
@@ -11,7 +11,6 @@
 
 .center {
      text-align: center;
-    padding-top: 60%;
 }
 
 .item-thumbnail-left{
@@ -20,7 +19,7 @@
 
 .mediaplayer-bar{
   padding: 0;
-  
+
   height: 50px;
   background-color: #e6e6e6;
 }
@@ -45,7 +44,7 @@
    transition:2s;
 }
 .mediaplayer-alert.active{
- 
+
   height:30px;
 }
 

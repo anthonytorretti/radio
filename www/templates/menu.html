@@ -20,17 +20,20 @@
     <!--Start Media Player Widget Footer Bar-->
     <ion-footer-bar align-title="left" ng-class="{'hide' : hide}" class="mediaplayer-bar">
 
-      <div class="row mediaplayer">
-          <div class="col mediaplayer-button">
-            <i class="icon" ng-class="streamInfo.isPlaying ? 'ion-ios-pause' : 'ion-ios-play' " ng-click="play()"></i>
+      <div class="row row-top mediaplayer">
+        <div class="row mediaplayer-button">
+            <i class="icon" ng-class="streamInfo.isPlaying ? 'ion-ios-pause' : 'ion-ios-play' " ng-click="prev()"></i>
           </div>
-      <div class="col col-50 col-center mediaplayer-info">{{streamInfo.isPlaying ? streamInfo.info.title : 'Streaming Paused'}}</div>
+        <!--prev next
+        <i class="icon" ng-class="streamInfo.isPlaying ? 'ion-ios-pause' : 'ion-ios-play' " ng-click="next()"></i>
+        <i class="icon" ng-class="streamInfo.isPlaying ? 'ion-ios-pause' : 'ion-ios-play' " ng-click="previous()"></i>
+        -->
 
-
-        <div class="col col-33 col-center mediaplayer-info"  ng-include="'resources/play-widget/playing-widget.html'"></div>
+      <!--  <div class="col col-33 col-center mediaplayer-info"  ng-include="'resources/play-widget/playing-widget.html'"></div> -->
 
 
       </div>
+      <div class="row row-bottom mediaplayer-info">{{streamInfo.isPlaying ? streamInfo.info.title : 'Streaming Paused'}}</div>
 
     </ion-footer-bar>
     <!--End Media Player FooterBar-->
@@ -60,6 +63,16 @@
         <ion-item menu-close ng-click="changestream('classicheita')"   href="#/menu/tab/playlist">
           Classiche italiane
         </ion-item>
+        <div class="item item-divider center">
+          Streaming
+          <a href="#/menu/tab/dash"><div menu-close ng-click="changestream('stream')">
+        <div class="item item-thumbnail ">
+        <img src="./img/icon.png">
+          </div>
+          </div>
+            </a>
+          </div>
+
        </ion-list>
     </ion-content>
   </ion-side-menu>

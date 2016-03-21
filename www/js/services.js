@@ -479,10 +479,10 @@ return deferred.promise;
                      if(currentTime==0) {
                       myaudio.preload = "none";
                        myaudio.src = PlayListArray[PlayElement].file;
-                       
+
                        playlistInfo.artist=PlayListArray[PlayElement].artist;
                        playlistInfo.title=PlayListArray[PlayElement].title;
-                       
+
 
 
                      };
@@ -493,15 +493,8 @@ console.log( "PLAYYYY"+streamStatus.IsPlaylist);
 
 
     myaudio.onended = function() {
-      if(PlayElement < PlayListArray.length-1) {
 
-        self.nextPlaylist();
-      }
-      else {
-        PlayElement = -1;
-        self.nextPlaylist();
-      }
-
+          self.nextPlaylist();
     };
 
                   },
@@ -528,16 +521,34 @@ console.log( "PLAYYYY"+streamStatus.IsPlaylist);
 
   nextPlaylist: function(){
     currentTime==0;
-    PlayElement++;
-    self.stopPlayList();
-    self.playPlayList();
+
+    if(PlayElement < PlayListArray.length-1) {
+      PlayElement++;
+      self.stopPlayList();
+      self.playPlayList();
+
+    }
+    else {
+      PlayElement = 0;
+      self.stopPlayList();
+      self.playPlayList();
+    }
+
   },
 
   previousPlaylist: function(){
     currentTime==0;
-    PlayElement--;
-    self.stopPlayList();
-    self.playPlayList();
+    if(PlayElement > 0) {
+      PlayElement--;
+      self.stopPlayList();
+      self.playPlayList();
+
+    }
+    else {
+      
+      self.stopPlayList();
+      self.playPlayList();
+    }
   },
 
   play: function(){
@@ -586,7 +597,9 @@ console.log( "PLAYYYY"+streamStatus.IsPlaylist);
     loadstream: streamCtrl.loadstream,
     changeStream: streamCtrl.changeStream,
     changeSong: streamCtrl.changeSong,
-    getCoverPlaylist: streamCtrl.getCoverPlaylist
+    getCoverPlaylist: streamCtrl.getCoverPlaylist,
+    next: streamCtrl.nextPlaylist,
+    prev: streamCtrl.previousPlaylist
   };
 
 

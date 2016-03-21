@@ -37,7 +37,12 @@ angular.module('starter.controllers',[])
                   streamService.toggleplay();
               }
 
-
+               $scope.next=function () {
+                 streamService.next();
+               }
+  $scope.prev=function () {
+    streamService.prev();
+  }
 
 
             //DYNAMIC BINDING OF CUSTOM CSS//
