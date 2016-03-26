@@ -22,12 +22,11 @@
 
       <div class="row row-top mediaplayer">
         <div class="row mediaplayer-button">
-            <i class="icon" ng-class="streamInfo.isPlaying ? 'ion-ios-pause' : 'ion-ios-play' " ng-click="prev()"></i>
-          </div>
-        <!--prev next
-        <i class="icon" ng-class="streamInfo.isPlaying ? 'ion-ios-pause' : 'ion-ios-play' " ng-click="next()"></i>
-        <i class="icon" ng-class="streamInfo.isPlaying ? 'ion-ios-pause' : 'ion-ios-play' " ng-click="previous()"></i>
-        -->
+          <i class="icon ion-skip-backward" ng-class="streamInfo.isPlaying ? 'ion-ios-pause' : 'ion-ios-play' " ng-click="prev()"></i>
+          <i class="icon" ng-class="streamInfo.isPlaying ? 'ion-ios-pause' : 'ion-ios-play' " ng-click="play()"></i>
+          <i class="icon ion-skip-forward" ng-class="streamInfo.isPlaying ? 'ion-ios-pause' : 'ion-ios-play' " ng-click="next()"></i>
+
+        </div>
 
       <!--  <div class="col col-33 col-center mediaplayer-info"  ng-include="'resources/play-widget/playing-widget.html'"></div> -->
 

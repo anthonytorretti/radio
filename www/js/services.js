@@ -495,6 +495,7 @@ console.log( "PLAYYYY"+streamStatus.IsPlaylist);
     myaudio.onended = function() {
 
           self.nextPlaylist();
+
     };
 
                   },
@@ -536,16 +537,16 @@ console.log( "PLAYYYY"+streamStatus.IsPlaylist);
 
   },
 
-  previousPlaylist: function(){
+  prevPlaylist: function(){
     currentTime==0;
-    if(PlayElement > 0) {
+
+    if(PlayElement >0) {
       PlayElement--;
       self.stopPlayList();
       self.playPlayList();
 
     }
     else {
-      
       self.stopPlayList();
       self.playPlayList();
     }
@@ -599,7 +600,7 @@ console.log( "PLAYYYY"+streamStatus.IsPlaylist);
     changeSong: streamCtrl.changeSong,
     getCoverPlaylist: streamCtrl.getCoverPlaylist,
     next: streamCtrl.nextPlaylist,
-    prev: streamCtrl.previousPlaylist
+    prev: streamCtrl.prevPlaylist
   };
 
 

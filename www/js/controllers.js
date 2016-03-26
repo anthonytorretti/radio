@@ -16,7 +16,7 @@ angular.module('starter.controllers',[])
 
                  });
 
-               }
+               };
                      //START GETTING STREAM INFO
                 $scope.streamInfo=streamService.getStatus();
                 timer = $interval(function() {
@@ -35,14 +35,16 @@ angular.module('starter.controllers',[])
 
                 $scope.play= function(){
                   streamService.toggleplay();
-              }
+              };
 
                $scope.next=function () {
                  streamService.next();
-               }
-  $scope.prev=function () {
-    streamService.prev();
-  }
+                 console.log("next");
+               };
+              $scope.prev=function () {
+                 streamService.prev();
+                 console.log("prev");
+               };
 
 
             //DYNAMIC BINDING OF CUSTOM CSS//
@@ -136,7 +138,7 @@ var streamStatus=streamService.getStatus();
   }, 5000);
 
   $scope.play= function(){
-  
+
   if(streamStatus.isPlayList){
 
     streamService.changestream("stream");
@@ -149,7 +151,7 @@ var streamStatus=streamService.getStatus();
 
 
     $scope.vm=streamService.getStatus();
-  }
+  };
 
 
 var myaudioURL = 'http://74.86.113.231:8000/;';
