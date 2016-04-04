@@ -147,15 +147,17 @@ var streamStatus=streamService.getStatus();
 
       streamService.toggleplay();
 
-  }
+  },
 
+  $scope.changeSong= function(id){
+      id=id-1;
 
     $scope.vm=streamService.getStatus();
   };
 
 
-var myaudioURL = 'http://74.86.113.231:8000/;';
-
+      streamService.changeSong(id);
+  }
 })
 
 
