@@ -39,7 +39,7 @@
 
   </ion-side-menu-content>
 
-  <ion-side-menu side="right">
+  <ion-side-menu class="menu menu-right" side="right" is-enabled="true" width="275" style="width: 275px; z-index: 0;">
     <ion-header-bar class="bar-stable">
       <h1 class="title">Playlist</h1>
     </ion-header-bar>
@@ -62,14 +62,13 @@
         <ion-item menu-close ng-click="changestream('classicheita')"   href="#/menu/tab/playlist">
           Classiche italiane
         </ion-item>
-        <div class="item item-divider center">
-          Streaming
+        <div class="expanded bar disable-user-behavior">
+          <div class="menu-bottom">Streaming</div>
           <a href="#/menu/tab/dash"><div menu-close ng-click="changestream('stream')">
-        <div class="item item-thumbnail ">
+        <div class="avatar motion spin fade ">
         <img src="./img/icon.png">
           </div>
-          </div>
-            </a>
+          </a>
           </div>
 
        </ion-list>

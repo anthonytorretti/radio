@@ -53,3 +53,10 @@
 }
 
 .mediaplayer-button>i{margin-left: 50px;}
+
+.menu .avatar {
+  top: 49px;
+  left: 42px;
+}
+
+.row.header{background-color: #1bb556;}

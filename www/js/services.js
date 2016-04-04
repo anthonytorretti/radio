@@ -158,7 +158,7 @@ var streamCtrl = {
     switch(genere) {
       case 'tophits':
       playlistInfo.genere="Top Hits";
-        var url = 'http://superadio.biz/playlist.m3u';
+        var url = 'http://superadio.biz/tophits.m3u';
         ParseM3U.getM3U(url).then(function(data){
         deferre.resolve(data);
         });
